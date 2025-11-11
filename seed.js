@@ -16,7 +16,7 @@ const lessons = [
   { topic: 'Chemistry', location: 'Brent', price: 50, space: 5 },
 ];
 
-(async () => {
+(async () => {  
   await connectDB();
   const db = getDB();
 
