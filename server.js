@@ -1,30 +1,31 @@
-// server.js
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const { connectDB } = require('./config/db');
-const logger = require('./middleware/logger');
-const imagesMiddleware = require('./middleware/imagesHandler');
+const express = require('express')
+const cors = require('cors')
+const dotenv = require('dotenv')
+const { connectDB } = require('./config/db')
 
-const lessonRoutes = require('./routes/lessons');
-const orderRoutes = require('./routes/orders');
+dotenv.config()
 
-const app = express();
+const app = express()
+const PORT = process.env.PORT || 5000
 
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use(logger);
-imagesMiddleware(app);
+app.use(cors())
+app.use(express.json())
+
+// Logger middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  next()
+})
+
+// Connect to MongoDB
+connectDB()
 
 // Routes
-app.use('/api/lessons', lessonRoutes);
-app.use('/api/orders', orderRoutes);
+app.use('/api/lessons', require('./routes/lessons'))
+app.use('/api/orders', require('./routes/orders')) // 👈 new
 
-app.get('/', (req, res) => res.send('After-School API running...'));
+// Default route
+app.get('/', (req, res) => res.send('After-School API running...'))
 
-// Connect DB and start
-connectDB().then(() => {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

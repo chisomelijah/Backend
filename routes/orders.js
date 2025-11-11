@@ -1,31 +1,54 @@
 // routes/orders.js
-const express = require('express');
-const { getDB } = require('../config/db');
+const express = require('express')
+const { getDB } = require('../config/db')
+const { ObjectId } = require('mongodb')
 
-const router = express.Router();
+const router = express.Router()
 
-// POST /api/orders
+// POST /api/orders — create new order
 router.post('/', async (req, res) => {
   try {
-    const { name, phone, lessonIDs, numberOfSpaces } = req.body;
+    const db = getDB()
+    const { name, phone, lessons } = req.body
 
-    if (!name || !phone || !Array.isArray(lessonIDs) || !numberOfSpaces) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    // Basic validation
+    if (!name || !phone || !Array.isArray(lessons) || lessons.length === 0) {
+      return res.status(400).json({ error: 'Invalid order data' })
     }
 
-    const db = getDB();
-    const result = await db.collection('orders').insertOne({
+    // Prepare order object
+    const order = {
       name,
       phone,
-      lessonIDs: lessonIDs.map(id => new (id)),
-      numberOfSpaces,
-      createdAt: new Date(),
-    });
+      lessons: lessons.map(l => ({
+        lessonId: l.lessonId ? new ObjectId(l.lessonId) : null,
+        topic: l.topic,
+        price: l.price
+      })),
+      createdAt: new Date()
+    }
 
-    res.status(201).json({ message: 'Order saved', orderId: result.insertedId });
+    // Insert order into "orders" collection
+    const result = await db.collection('orders').insertOne(order)
+
+    // Optionally update lesson spaces
+    for (const lesson of lessons) {
+      if (lesson.lessonId) {
+        await db.collection('lessons').updateOne(
+          { _id: new ObjectId(lesson.lessonId) },
+          { $inc: { space: -1 } } // decrease available space by 1
+        )
+      }
+    }
+
+    res.status(201).json({
+      message: 'Order created successfully',
+      orderId: result.insertedId
+    })
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('❌ Error creating order:', err)
+    res.status(500).json({ error: 'Failed to create order' })
   }
-});
+})
 
-module.exports = router;
+module.exports = router
