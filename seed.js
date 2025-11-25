@@ -10,9 +10,9 @@ const lessons = [
   { topic: 'Art', location: 'Golders Green', price: 95, space: 5 },
   { topic: 'Music', location: 'Camden', price: 70, space: 5 },
   { topic: 'History', location: 'Kilburn', price: 120, space: 5 },
-  { topic: 'Geography', location: 'Wembley', price: 85, space: 5 },
-  { topic: 'Spanish', location: 'Edgware', price: 75, space: 5 },
-  { topic: 'Biology', location: 'Harrow', price: 60, space: 5 },
+  { topic: 'Geography', location: 'Lewisham', price: 85, space: 5 },
+  { topic: 'Spanish', location: 'Paddington', price: 75, space: 5 },
+  { topic: 'Biology', location: 'Piccadilly', price: 60, space: 5 },
   { topic: 'Chemistry', location: 'Brent', price: 50, space: 5 },
 ];
 
