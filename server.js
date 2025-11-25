@@ -12,7 +12,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://chisomelijah.github.io/Frontend"
+      "https://chisomelijah.github.io"
     ],
     methods: ["GET", "POST", "PUT"],
   })
