@@ -16,16 +16,7 @@ router.post('/', async (req, res) => {
     }
 
     // Prepare order object
-    const order = {
-      name,
-      phone,
-      lessons: lessons.map(l => ({
-        lessonId: l.lessonId ? new ObjectId(l.lessonId) : null,
-        topic: l.topic,
-        price: l.price
-      })),
-      createdAt: new Date()
-    }
+
 
     // Insert order into "orders" collection
     const result = await db.collection('orders').insertOne(order)
