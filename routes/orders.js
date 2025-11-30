@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
     }
 
     // Prepare order object
-   const order = {
+    const order = {
       name,
       phone,
       lessons: lessons.map(l => ({
