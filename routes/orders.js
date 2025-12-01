@@ -35,11 +35,12 @@ router.post('/', async (req, res) => {
     for (const lesson of lessons) {
       if (lesson.lessonId) {
         await db.collection('lessons').updateOne(
-          { _id: new (lesson.lessonId) },
-          { $inc: { space: -1 } } // decrease available space by 1
+          { _id: new ObjectId(lesson.lessonId) },
+          { $inc: { space: -1 } }
         )
       }
     }
+
 
     res.status(201).json({
       message: 'Order created successfully',
