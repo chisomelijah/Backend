@@ -5,6 +5,7 @@ const { connectDB } = require("./config/db");
 
 const lessonsRoute = require("./routes/lessons");
 const ordersRoute = require("./routes/orders");
+const searchRoute = require("./routes/search");
 
 const app = express();
 

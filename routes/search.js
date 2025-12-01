@@ -1,12 +1,14 @@
 const express = require('express');
-const { ObjectId } = require('mongodb');
 const { getDB } = require('../config/db');
 
 const router = express.Router();
 
-router.get('/search', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const query = req.query.query;
+        const { query = '' } = req.query;
+
+        const db = getDB();
+        const lessonsCollection = db.collection('lessons');
 
         const results = await lessonsCollection.find({
             $or: [
