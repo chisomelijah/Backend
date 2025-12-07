@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
         const numericValue = isNumeric ? Number(q) : null
 
         // Full-text style search across topic, location, and (optionally) numeric fields
+
         const filter = {
             $or: [
                 { topic: { $regex: q, $options: 'i' } },
