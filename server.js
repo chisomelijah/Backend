@@ -9,7 +9,6 @@ const searchRoute = require("./routes/search");
 
 const app = express();
 
-
 app.use(
   cors({
     origin: [
@@ -39,9 +38,6 @@ app.use("/api/search", searchRoute);
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
-
-
-
 
 const PORT = process.env.PORT || 5000;
 
